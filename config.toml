@@ -1,0 +1,57 @@
+baseURL = "http://example.org/"
+languageCode = "en-us"
+title = "Sumera Priyadarsini"
+theme="avicenna"
+
+[params]
+  subtitle= "Writing Happy Code"
+  interests="Operating Systems, Data Science "
+  cv_name= "sumo_cv.pdf"
+
+[[params.social]]
+  name = "GitHub"
+  icon = "github"
+  url = "https://github.com/Sylfrena"
+
+[[params.social]]
+  name = "Twitter"
+  icon = "twitter"
+  url = "https://twitter.com/SumoOfShinovar"
+
+
+[[params.social]]
+  name = "LinkedIn"
+  icon = "linkedin"
+  url = "https://linkedin.com/in/sumera-priyadarsini-3b5259129/"
+
+[[params.introduction.paragraph]]
+  text="""Hi, I am Sumera. I am a CS undergrad and a Data Scientist from IIIT-Bhubaneswar.
+  I mostly write Python at work but being a programming language enthusiast I also dabble in
+  multiple programming languages-  Ruby and C being two of them. Currently I am learning Rust. Apart from
+  Data Science, another CS domain that thoroughly fascinates me is Operating Systems. I also contribute to
+  the linux kernel, here is a link to my [patches](https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/staging.git/log/?h=staging-next&qt=author&q=sumera).
+   """
+[[params.introduction.paragraph]]
+  text="""
+  When I am not programming I like to read, bake, or paint.
+  """
+
+[[params.introduction.paragraph]]
+  text="""
+  Besides open source development I have some industry experience working as a Data Science intern
+  for one of the top telecom firms. If you are looking for an aspiring polyglot developer for junior
+  data scientist /ML  positions then you can reach out to me on [Linkedin](https://www.linkedin.com/in/sumera-priyadarsini-3b5259129/). I am also open to exploring other
+  software engineering domains, it doesn't strictly have to be Data Science.
+  """
+
+[[params.projects]]
+        [[params.projects.project]]
+                name = "RubyShells"
+                description  = "A CLI too for interacting with the seashells.io server written in Ruby"
+                code_link = "https://github.com/Sylfrena/Rubyshells"
+        [[params.projects.project]]
+                name= "Accented Speech Recognition"
+                description = "Automatic Speech Recognition for Accented English trained using DeepSpeech"
+                code_link= "https://github.com/Sylfrena/accented-speech-recognition"
+
+

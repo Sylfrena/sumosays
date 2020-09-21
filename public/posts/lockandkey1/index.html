@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+    <head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title> - Sumera Priyadarsini</title><link rel="apple-touch-icon" sizes="180x180" href=http://example.org/apple-touch-icon.png>
+	<link rel="icon" type="image/png" sizes="32x32" href=http://example.org/favicon-32x32.png>
+	<link rel="icon" type="image/png" sizes="16x16" href=http://example.org/favicon-16x16.png>
+	<link rel="manifest" href=http://example.org/site.webmanifest>
+	<link rel="mask-icon" href=http://example.org/safari-pinned-tab.svg color="#5bbad5">
+	<meta name="msapplication-TileColor" content="#da532c">
+	<meta name="theme-color" content="#ffffff">
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta property="og:title" content="" />
+<meta property="og:description" content="1. A primer on processes and locks Every application, every program that runs on a computer runs as a process. The shell you use to interact with the os, the music player on your machine, your browser- basically, every set of instructions is executed as a process. A process is an instance of sourcecode that needs to be executed. Whenever a program is to be run, the kernel allocates certain resources like memory, address space etc." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://example.org/posts/lockandkey1/" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content=""/>
+<meta name="twitter:description" content="1. A primer on processes and locks Every application, every program that runs on a computer runs as a process. The shell you use to interact with the os, the music player on your machine, your browser- basically, every set of instructions is executed as a process. A process is an instance of sourcecode that needs to be executed. Whenever a program is to be run, the kernel allocates certain resources like memory, address space etc."/>
+<link href="https://fonts.googleapis.com/css?family=Ubuntu:300,400,300italic,400italic|Raleway:500,100,300" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" media="screen" href=http://example.org/css/normalize.css />
+	<link rel="stylesheet" type="text/css" media="screen" href=http://example.org/css/main.css/>
+
+	<script src=http://example.org/js/feather.min.js></script><script src=http://example.org/js/main.js></script>
+</head>
+
+    <body>
+        <div id="content">
+
+
+
+
+
+<div class="header wrapper">
+  <span class="page_title">
+    
+  </span>
+  <ul class="flat">
+    <li class="page_meta">January 1, 0001</li>
+  </ul>
+  <a href="http://example.org/" title="Home" class="page_meta">Return Home</a>
+</div>
+
+
+<div class="content wrapper">
+  <!-- raw HTML omitted -->
+<p>if (e) {
+&hellip; when any
+mutex_lock(E@p)
+&hellip; when != E
+when any
+else S1
+.. when != E
+when any
+f@pif (e) {
+&hellip; when != E
+when any
+mutex_unlock(E);
+&hellip; when any
+else S2
+<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->Usually, to find a non-ideal condition- we need to define the ideal first. Drawing on that analogy we define a rule where locking has been properly implemented- i.e. the acquired lock is released under the same conditions as well. Later, we will take this balanced rule and negate it to detect situations where locking has been irregularly implemented.<!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
+<p>*mutex_lock(E@p);
+&hellip; when != mutex_unlock(E);
+when != if@pif (&hellip;) S1 else S2
+when any
+x = f(&hellip;);
+*if (&lt;+&hellip;x&hellip;+&gt;)
+{
+&hellip; when != mutex_unlock(E);
+when != if@pif (&hellip;) S3 else S4</p>
+<ul>
+<li>return &hellip;;
+}
+&hellip; when any
+*mutex_unlock(E);
+&hellip; when != mutex_lock(E);
+<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->Here we inherit the <!-- raw HTML omitted -->p<!-- raw HTML omitted --> and the <!-- raw HTML omitted -->pif<!-- raw HTML omitted --> position metavariables to specify the respective <!-- raw HTML omitted -->mutex_lock<!-- raw HTML omitted --> and <!-- raw HTML omitted -->mutex_unlock<!-- raw HTML omitted --> we marked in the <!-- raw HTML omitted -->prelocked<!-- raw HTML omitted --> and <!-- raw HTML omitted -->balanced<!-- raw HTML omitted --> rules respetively. In<!-- raw HTML omitted --></li>
+</ul>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<pre><code>-mutex_lock(&amp;amp;vfio.group_lock);
+  / Did we race creating this group? */
+  lst_for_each_entry(tmp, &amp;amp;vfio.group_list, vfio_next) {
+@@ 372,19 +371,15 @@ static struct vfio_group *vfio_create_gr
+     
+  mnor = vfio_alloc_group_minor(group);
+-if (minor &amp;lt; 0) {
+vfio_group_unlock_and_free(group);
+-	return ERR_PTR(minor);
+     
+  dv = device_create(vfio.class, NULL,
+      MKDEV(MAJOR(vfio.group_devt), minor),
+          group, &amp;quot;%s%d&amp;quot;, group-&amp;gt;noiommu ? &amp;quot;noiommu-&amp;quot; : &amp;quot;&amp;quot;,
+          iommu_group_id(iommu_group));
+-	if (IS_ERR(dev)) {
+    vfio_free_group_minor(minor);
+    vfio_group_unlock_and_free(group);
+-		return ERR_CAST(dev);
+  }
+</code></pre>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->In the <!-- raw HTML omitted -->if<!-- raw HTML omitted --> cases, there is no <!-- raw HTML omitted -->mutex_unlock()<!-- raw HTML omitted --> present. However, the <!-- raw HTML omitted -->vfio_group_unlock_and_free()<!-- raw HTML omitted --> function called in these <!-- raw HTML omitted -->if<!-- raw HTML omitted --> blocks calls the <!-- raw HTML omitted -->mutex_unlock()<!-- raw HTML omitted --> function.<!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
+<p>rc = cxlflash_afu_sync(afu, ctxid, rhndl, AFU_LW_SYNC);
+if (unlikely(rc)) {
+rc = -EAGAIN;
+goto err2;
+}</p>
+<p>out:
+if (locked)
+mutex_unlock(&amp;blka-&gt;mutex);
+dev_dbg(dev, &quot;%s: returning rc=%d\n&quot;, <strong>func</strong>, rc);
+return rc;
+err2:
+/* Reset the RHTE */
+rhte-&gt;lxt_cnt = 0;
+dma_wmb();
+rhte-&gt;lxt_start = NULL;
+dma_wmb();
+err:
+/* free the clones already made */
+for (j = 0; j &lt; i; j++) {
+aun = (lxt[j].rlba_base &gt;&gt; MC_CHUNK_SHIFT);
+ba_free(&amp;blka-&gt;ba_lun, aun);
+}
+kfree(lxt);
+goto out;
+}
+<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->If control ends up in <!-- raw HTML omitted -->err2<!-- raw HTML omitted -->, then the fate of the lock becomes unclear. <!-- raw HTML omitted -->dma_wmb<!-- raw HTML omitted --> has not been defined in <!-- raw HTML omitted -->vlun.c<!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
+<p>return ret;</p>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
+
+</div>
+
+</div>
+        <div class="footer wrapper">
+	<nav class="nav">
+		<div><a href="https://github.com/hadisinaee/avicenna">Avicenna Theme</a> | Built with <a href="https://gohugo.io">Hugo</a></div>
+	</nav>
+</div>
+
+<script>
+	feather.replace()
+
+</script>
+    </body>
+</html>

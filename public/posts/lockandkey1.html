@@ -1,0 +1,198 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Untitled Document.md</title><style></style></head><body id="preview">
+<h2 class="code-line" data-line-start=0 data-line-end=1><a id="1_A_primer_on_processes_and_locks_0"></a><code>1. A primer on processes and locks</code></h2>
+<p class="has-line-data" data-line-start="2" data-line-end="3">Every application, every program that runs on a computer runs as a process. The shell you use to interact with the os, the music player on your machine, your browser- basically, every set of instructions is executed as a process. A process is an instance of sourcecode that needs to be executed. Whenever a program is to be run, the kernel allocates certain resources like memory, address space etc. Data may be accessed by more than one process at the same time. A common situation is when there are multiple instances of an application running- such as several open tabs in a browser. You can verify this using <a href="">htop</a>. A process comprises data and memory resources that are associated with the program. When several processes try to concurrently access this common set of resources, proper synchronisation is necessary to implement efficient resource-sharing among the processes. This is where locking comes in.</p>
+<p class="has-line-data" data-line-start="4" data-line-end="5">Locks are implemented on shared data resources to ensure that processes are in sync when accessing common data. Only one process should have permission to modify or write to the data at a time. A second process can make changes to the same data only when the previous process is done with it. To facilitate this, processes acquire locks on the data for the duration of their execution and then release these locks from memory. It is necessary that every lock that is acquired must be released as well to prevent processes from hoarding memory and delaying other tasks.</p>
+<p class="has-line-data" data-line-start="6" data-line-end="7">Often, locks are acquired within a function only if certain conditions are met. However, this function can have control flow paths through the entire program. It must be ensured that all potential paths have an unlock as well. Given the huge extent of kernel code, it is easy to skip adding an unlock function to each path the funtion might take. We can leverage Coccinelle semantic patches to detect and examine such situations.</p>
+<h2 class="code-line" data-line-start=8 data-line-end=9><a id="2_Using_Coccinelle_8"></a><code>2. Using Coccinelle</code></h2>
+<p class="has-line-data" data-line-start="10" data-line-end="11">The philosophy behind Coccinelle is to frame a pattern that satisfies the usecase we have in mind. This pattern is written in form of transformation rules. We want to find a scenario where a lock may be potentially acquired and released under different conditions leading to resource hogging. Let’s start!</p>
+<pre><code class="has-line-data" data-line-start="13" data-line-end="19">@<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="b0c0c2d5dcdfd3dbd5d4f0">[email&#160;protected]</a>
+expression E;
+position p;
+@@
+mutex_lock(<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="25606555">[email&#160;protected]</a>)
+</code></pre>
+<p class="has-line-data" data-line-start="20" data-line-end="21">Our first rule <code>prelocked</code> tries to check whether a lock is acquired. It keeps track of the resource on which lock is acquired using the variable <code>E</code>. The <code>@p</code> storesthe position of the lock declaration. This helps to identify the particular lock in case there are more than one locks. Next we define a second rule <code>balanced</code> :</p>
+<pre><code class="has-line-data" data-line-start="23" data-line-end="45">@<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="d2b0b3beb3bcb1b7b692">[email&#160;protected]</a>
+position prelocked.p;
+position pif;
+expression e,prelocked.E;
+statement S1,S2;
+@@
+
+if (e) {
+ ... when any
+mutex_lock(<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="80c5c0f0">[email&#160;protected]</a>)
+... when != E
+    when any
+ else S1
+.. when != E
+   when any
+<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="680e2818010e">[email&#160;protected]</a> (e) {
+... when != E
+    when any
+mutex_unlock(E);
+... when any
+ else S2
+</code></pre>
+<p class="has-line-data" data-line-start="45" data-line-end="46">Usually, to find a non-ideal condition- we need to define the ideal first. Drawing on that analogy we define a rule where locking has been properly implemented- i.e. the acquired lock is released under the same conditions as well. Later, we will take this balanced rule and negate it to detect situations where locking has been irregularly implemented.</p>
+<p class="has-line-data" data-line-start="47" data-line-end="48">We want to check if the lock is released under the same condition as under which it was acquired. The condition here is represented by the expression variable <code>e</code>. First, we check for the <code>mutex_lock</code> we found in the prelocked rule. In the next if block we check for <code>mutex_unlock</code> for the same condition <code>e</code>. In both these cases, we make sure the resource E is not called elsewhere in these blocks, so as to avoid false positives. We mark the if block where <code>mutex_unlock()</code> is called using the position variable <code>pif</code>.</p>
+<p class="has-line-data" data-line-start="49" data-line-end="50">Let’s move on to the next rule where we define the pattern we want.</p>
+<pre><code class="has-line-data" data-line-start="52" data-line-end="74">@@
+expression E,x,f;
+position prelocked.p;
+position any balanced.pif;
+statement S1,S2,S3,S4;
+@@
+
+*mutex_lock(<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="6f2a2f1f">[email&#160;protected]</a>);
+... when != mutex_unlock(E);
+    when != <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="8fe6e9cfffe6e9">[email&#160;protected]</a> (...) S1 else S2
+    when any
+x = f(...);
+*if (&lt;+...x...+&gt;)
+{
+  ... when != mutex_unlock(E);
+      when != <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="4b222d0b3b222d">[email&#160;protected]</a> (...) S3 else S4
+* return ...;
+}
+... when any
+*mutex_unlock(E);
+... when != mutex_lock(E);
+</code></pre>
+<p class="has-line-data" data-line-start="74" data-line-end="75">Here we inherit the <code>p</code> and the <code>pif</code> position metavariables to specify the respective <code>mutex_lock</code> and <code>mutex_unlock</code> we marked in the <code>prelocked</code> and <code>balanced</code> rules respetively. In</p>
+<pre><code class="has-line-data" data-line-start="77" data-line-end="83">*mutex_lock(<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="d49194a4">[email&#160;protected]</a>);
+... when != mutex_unlock(E);
+    when != <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="31585771415857">[email&#160;protected]</a> (...) S1 else S2
+    when any
+
+</code></pre>
+<p class="has-line-data" data-line-start="83" data-line-end="84">we first identify the mutex lock, then negate the if condition from the balanced rule, making sure <code>mutex_unlock</code> has not been called. Then,</p>
+<pre><code class="has-line-data" data-line-start="86" data-line-end="95">x = f(...);
+*if (&lt;+...x...+&gt;)
+{
+  ... when != mutex_unlock(E);
+      when != <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="b5dcd3f5c5dcd3">[email&#160;protected]</a> (...) S3 else S4
+* return ...;
+}
+
+</code></pre>
+<p class="has-line-data" data-line-start="95" data-line-end="96">we check to ensure that the mutex_unlock() has not been called within an arbitrary function denoted by <code>x=f(...)</code>. We also check that the balanced rule is not satisfied here.</p>
+<p class="has-line-data" data-line-start="97" data-line-end="98">Finally, we check if <code>mutex_unlock</code> has been called in the program elsewhere and no other lock has been acquired:</p>
+<pre><code class="has-line-data" data-line-start="100" data-line-end="104">... when any
+*mutex_unlock(E);
+... when != mutex_lock(E);
+</code></pre>
+<p class="has-line-data" data-line-start="105" data-line-end="106">In all, we try to find a pattern where:</p>
+<ol>
+<li class="has-line-data" data-line-start="106" data-line-end="107">mutex_lock` is present but the balanced rule is not satisfied.</li>
+<li class="has-line-data" data-line-start="107" data-line-end="108">In the case where a function is declared within an if block, it returns without satisfying the balanced rule or calling <code>mutex_unlock</code>.</li>
+<li class="has-line-data" data-line-start="108" data-line-end="110"><code>mutex_unlock</code> is called outside an if block.</li>
+</ol>
+<p class="has-line-data" data-line-start="110" data-line-end="111">We save this script in a <em>.cocci</em> file and then run it to find code segments of interest.</p>
+<h2 class="code-line" data-line-start=113 data-line-end=114><a id="3_Sematic_patch_results_113"></a><code>3. Sematic patch results</code></h2>
+<p class="has-line-data" data-line-start="114" data-line-end="115">On running he script, I found several matching patches that did not have matching unlocks. Next, we need to verify these results, identify common false positive scenarios, nd improve the script. Some common scenarios were:</p>
+<ol>
+<li class="has-line-data" data-line-start="115" data-line-end="146">
+<p class="has-line-data" data-line-start="115" data-line-end="116">Sometimes, the unlock was called in a different function which was often specified under an if condition.</p>
+<pre><code class="has-line-data" data-line-start="117" data-line-end="144">diff -u -p ./drivers/vfio/vfio.c /tmp/nothing/vfio/vfio.c
+    --- ./drivers/vfio/vfio.c
+    +++ /tmp/nothing/vfio/vfio.c
+    @@ -360,7 +360,6 @@ static struct vfio_group *vfio_create_gr
+        return ERR_PTR(ret);
+      }
+
+    -mutex_lock(&amp;vfio.group_lock);
+      / Did we race creating this group? */
+      lst_for_each_entry(tmp, &amp;vfio.group_list, vfio_next) {
+    @@ 372,19 +371,15 @@ static struct vfio_group *vfio_create_gr
+      
+      mnor = vfio_alloc_group_minor(group);
+    -if (minor &lt; 0) {
+    vfio_group_unlock_and_free(group);
+    -    return ERR_PTR(minor);
+      
+      dv = device_create(vfio.class, NULL,
+          MKDEV(MAJOR(vfio.group_devt), minor),
+              group, &quot;%s%d&quot;, group-&gt;noiommu ? &quot;noiommu-&quot; : &quot;&quot;,
+              iommu_group_id(iommu_group));
+    -    if (IS_ERR(dev)) {
+        vfio_free_group_minor(minor);
+        vfio_group_unlock_and_free(group);
+    -        return ERR_CAST(dev);
+      }
+</code></pre>
+<p class="has-line-data" data-line-start="144" data-line-end="145">In the <code>if</code> cases, there is no <code>mutex_unlock()</code> present. However, the <code>vfio_group_unlock_and_free()</code> function called in these <code>if</code> blocks calls the <code>mutex_unlock()</code> function.</p>
+</li>
+<li class="has-line-data" data-line-start="146" data-line-end="158">
+<p class="has-line-data" data-line-start="146" data-line-end="147">In another case, the conditional statements were directed towards a <code>goto</code> statement which called <code>mutex_unlock().</code></p>
+<pre><code class="has-line-data" data-line-start="149" data-line-end="157">/* Check if bank switch was successful */
+   dret = sdw_ml_sync_bank_switch(bus);
+   - if (ret &lt; 0) {
+       dev_err(bus-&gt;dev,
+       &quot;multi link bank switch failed: %d\n&quot;, ret);
+       goto error;
+     }
+</code></pre>
+<p class="has-line-data" data-line-start="157" data-line-end="158">Here, the <code>error</code> block contained a <code>mutex_unlock()</code>.</p>
+</li>
+<li class="has-line-data" data-line-start="158" data-line-end="201">
+<p class="has-line-data" data-line-start="158" data-line-end="159">In yet other cases, certain conditions only returned an error and exited/ended. It was difficult to ascertain whether the intended behaviour was to exit the function with the lock still held.</p>
+<pre><code class="has-line-data" data-line-start="161" data-line-end="199">mutex_lock(&amp;blka-&gt;mutex);
+    locked = true;
+    for (i = 0; i &lt; rhte_src-&gt;lxt_cnt; i++) {
+        aun = (lxt[i].rlba_base &gt;&gt; MC_CHUNK_SHIFT);
+        if (ba_clone(&amp;blka-&gt;ba_lun, aun) == -1ULL) {
+            rc = -EIO;
+            goto err;
+        }
+    }
+}
+
+rc = cxlflash_afu_sync(afu, ctxid, rhndl, AFU_LW_SYNC);
+if (unlikely(rc)) {
+    rc = -EAGAIN;
+    goto err2;
+}
+
+out:
+    if (locked)
+        mutex_unlock(&amp;blka-&gt;mutex);
+    dev_dbg(dev, &quot;%s: returning rc=%d\n&quot;, __func__, rc);
+    return rc;
+err2:
+    /* Reset the RHTE */
+    rhte-&gt;lxt_cnt = 0;
+    dma_wmb();
+    rhte-&gt;lxt_start = NULL;
+    dma_wmb();
+err:
+    /* free the clones already made */
+    for (j = 0; j &lt; i; j++) {
+        aun = (lxt[j].rlba_base &gt;&gt; MC_CHUNK_SHIFT);
+        ba_free(&amp;blka-&gt;ba_lun, aun);
+    }
+    kfree(lxt);
+    goto out;
+}
+</code></pre>
+<p class="has-line-data" data-line-start="199" data-line-end="200">If control ends up in <code>err2</code>, then the fate of the lock becomes unclear. <code>dma_wmb</code> has not been defined in <code>vlun.c</code></p>
+</li>
+<li class="has-line-data" data-line-start="201" data-line-end="216">
+<p class="has-line-data" data-line-start="201" data-line-end="202">In a specific case, sometimes the code checked whether the lock was held or not using a function such as <code>mutex_is_locked()</code> which returns a boolean.</p>
+<pre><code class="has-line-data" data-line-start="203" data-line-end="215"> --- ./drivers/soundwire/stream.c       
+ @@ -851,11 +845,9 @@ msg_unlock:
+ list_for_each_entry(m_rt, &amp;stream-&gt;master_list, stream_node) {
+    bus = m_rt-&gt;bus;
+    if (mutex_is_locked(&amp;bus-&gt;msg_lock))
+        mutex_unlock(&amp;bus-&gt;msg_lock);
+ }
+ 
+ 
+return ret;
+ 
+</code></pre>
+</li>
+</ol>
+<p class="has-line-data" data-line-start="216" data-line-end="218">Cases 2 and 4 have reliable patterns that can be matched by checking for <code>mutex_unlock()</code> within <code>goto</code> and <code>mutex_is_locked()</code>.<br>
+In the next post, we will modify this script to eliminate these false positives.</p>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script></body></html>
