@@ -2,11 +2,13 @@ baseURL = "https://dolphinsandpikkabirds.netlify.app/"
 languageCode = "en-us"
 title = "Sumera Priyadarsini"
 theme="avicenna"
+Copyright= "© Sumera Priyadarsini 2020"
 
 [params]
   subtitle= "Writing Happy Code"
   interests="Operating Systems, Data Science "
   cv_name= "sumo_cv.pdf"
+
 
 [[params.social]]
   name = "GitHub"
@@ -56,8 +58,8 @@ theme="avicenna"
 
 
 [[menu.main]]
-name = "lockandkey1"
-identifier = "posts/lockandkey1.html" # this page will refer to a markdown file named "blog" in the content folder
+name = "All posts"
+#identifier = "posts/lockandkey1.html" # this page will refer to a markdown file named "blog" in the content folder
 pre = "<br />"
-url = "/posts"
+url = "/contents/posts"
 weight = 40
