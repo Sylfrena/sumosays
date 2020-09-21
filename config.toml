@@ -55,3 +55,9 @@ theme="avicenna"
                 code_link= "https://github.com/Sylfrena/accented-speech-recognition"
 
 
+[[menu.main]]
+name = "lockandkey1"
+identifier = "posts/lockandkey1.html" # this page will refer to a markdown file named "blog" in the content folder
+pre = "<br />"
+url = "/posts"
+weight = 40
