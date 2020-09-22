@@ -59,7 +59,7 @@ Copyright= "© Sumera Priyadarsini 2020"
 
 [[menu.main]]
 name = "All posts"
-identifier = "content/posts/" # this page will refer to a markdown file named "blog" in the content folder
+#identifier = "content/posts/" # this page will refer to a markdown file named "blog" in the content folder
 pre = "<br />"
-url = "/content/posts"
+url = "content/posts"
 weight = 40
