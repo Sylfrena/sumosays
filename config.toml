@@ -58,8 +58,8 @@ Copyright= "© Sumera Priyadarsini 2020"
 
 
 [[menu.main]]
-name = "coccilock1.md"
+name = "Blog"
 identifier = "content/posts/" # this page will refer to a markdown file named "blog" in the content folder
 pre = "<br />"
-url = "index"
+url = "content/posts/"
 weight = 40
