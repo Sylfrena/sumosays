@@ -61,5 +61,5 @@ Copyright= "© Sumera Priyadarsini 2020"
 name = "Blog"
 identifier = "content/posts/" # this page will refer to a markdown file named "blog" in the content folder
 pre = "<br />"
-url = "content/posts/"
+url = "posts/"
 weight = 40
