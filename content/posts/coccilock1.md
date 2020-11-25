@@ -1,8 +1,8 @@
----
-title: "Lock and Key"
-date: 2020-09-21T14:28:50+05:30
-draft: false
----
++++
+title="Lock and Key"
+date=2020-09-21T14:28:50+05:30
+draft=false
++++
 
 ## `1. A primer on processes and locks`
 

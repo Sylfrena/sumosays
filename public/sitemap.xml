@@ -3,26 +3,26 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>http://example.org/posts/coccilock1/</loc>
+    <loc>https://dolphinsandpikkabirds.netlify.app/posts/coccilock1/</loc>
     <lastmod>2020-09-21T14:28:50+05:30</lastmod>
   </url>
   
   <url>
-    <loc>http://example.org/posts/</loc>
+    <loc>https://dolphinsandpikkabirds.netlify.app/posts/</loc>
     <lastmod>2020-09-21T14:28:50+05:30</lastmod>
   </url>
   
   <url>
-    <loc>http://example.org/</loc>
+    <loc>https://dolphinsandpikkabirds.netlify.app/</loc>
     <lastmod>2020-09-21T14:28:50+05:30</lastmod>
   </url>
   
   <url>
-    <loc>http://example.org/categories/</loc>
+    <loc>https://dolphinsandpikkabirds.netlify.app/categories/</loc>
   </url>
   
   <url>
-    <loc>http://example.org/tags/</loc>
+    <loc>https://dolphinsandpikkabirds.netlify.app/tags/</loc>
   </url>
   
 </urlset>
