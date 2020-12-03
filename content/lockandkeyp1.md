@@ -1,5 +1,5 @@
 ---
-title: "Lock And Key - Part 1"
+title: "Lockandkeyp1"
 date: 2020-12-02T20:39:22+05:30
 draft: false
 ---
