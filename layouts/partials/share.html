@@ -1,3 +1,5 @@
+<script src="https://unpkg.com/feather-icons"></script>  
+
 <ul>
   {{ $icon_class_name := .Scratch.Get "icon_class_name"}}
   {{ if .Description }}
@@ -13,12 +15,12 @@
   </li>
   <li>
     <a class="icon" href="https://twitter.com/share?url={{ .Permalink }}&text={{ .Title }}">
-      <i class="fab fa-twitter {{ $icon_class_name }}" aria-hidden="true"></i>
+      <i data-feather="twitter" aria-hidden="true"></i>
     </a>
   </li>
   <li>
     <a class="icon" href="http://www.linkedin.com/shareArticle?url={{ .Permalink }}&title={{ .Title }}">
-      <i class="fab fa-linkedin {{ $icon_class_name }}" aria-hidden="true"></i>
+      <i data-feather="linkedin" aria-hidden="true"></i>
     </a>
   </li>
   <li>
@@ -62,3 +64,6 @@
     </a>
   </li>
 </ul>
+<script>
+  feather.replace()
+</script>
