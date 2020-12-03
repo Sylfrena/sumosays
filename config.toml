@@ -3,7 +3,7 @@ languageCode = "en-uk"
 languageLang = "en"
 title = "Sumera Priyadarsini"
 
-theme = "cactus"
+theme = "hugo-theme-cactus"
 
 colortheme = "white"
 
