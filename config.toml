@@ -1,65 +1,75 @@
-baseURL = "https://dolphinsandpikkabirds.netlify.app/"
-languageCode = "en-us"
+baseurl = "/"
+languageCode = "en-uk"
+languageLang = "en"
 title = "Sumera Priyadarsini"
-theme="avicenna"
-Copyright= "© Sumera Priyadarsini 2020"
+
+theme = "cactus"
+
+colortheme = "white"
 
 [params]
-  subtitle= "Writing Happy Code"
-  interests="Operating Systems, Data Science "
-  cv_name= "sumo_cv.pdf"
+css = ["css/custom.css"]
 
-
-[[params.social]]
-  name = "GitHub"
-  icon = "github"
-  url = "https://github.com/Sylfrena"
-
-[[params.social]]
-  name = "Twitter"
-  icon = "twitter"
-  url = "https://twitter.com/SumoOfShinovar"
-
-
-[[params.social]]
-  name = "LinkedIn"
-  icon = "linkedin"
-  url = "https://linkedin.com/in/sumera-priyadarsini-3b5259129/"
-
-[[params.introduction.paragraph]]
-  text="""Hi, I am Sumera. I am a CS undergrad and a Data Scientist from IIIT-Bhubaneswar.
-  I mostly write Python at work but being a programming language enthusiast I also dabble in
-  multiple programming languages-  Ruby and C being two of them. Currently I am learning Rust. Apart from
-  Data Science, another CS domain that thoroughly fascinates me is Operating Systems. I also contribute to
-  the linux kernel, here is a link to my [patches](https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/staging.git/log/?h=staging-next&qt=author&q=sumera).
-   """
-[[params.introduction.paragraph]]
-  text="""
-  When I am not programming I like to read, bake, or paint.
-  """
-
-[[params.introduction.paragraph]]
-  text="""
-  Besides open source development I have some industry experience working as a Data Science intern
-  for one of the top telecom firms. If you are looking for an aspiring polyglot developer for junior
-  data scientist /ML  positions then you can reach out to me on [Linkedin](https://www.linkedin.com/in/sumera-priyadarsini-3b5259129/). I am also open to exploring other
-  software engineering domains, it doesn't strictly have to be Data Science.
-  """
-
-[[params.projects]]
-        [[params.projects.project]]
-                name = "RubyShells"
-                description  = "A CLI too for interacting with the seashells.io server written in Ruby"
-                code_link = "https://github.com/Sylfrena/Rubyshells"
-        [[params.projects.project]]
-                name= "Accented Speech Recognition"
-                description = "Automatic Speech Recognition for Accented English trained using DeepSpeech"
-                code_link= "https://github.com/Sylfrena/accented-speech-recognition"
-
+# Main menu which appears below site header.
+[[menu.main]]
+name = "Home"
+url = "/"
+weight = 1
 
 [[menu.main]]
-name = "Blog"
-identifier = "content/posts/" # this page will refer to a markdown file named "blog" in the content folder
-pre = "<br />"
-url = "posts/"
-weight = 40
+name = "Writings"
+url = "/posts"
+weight = 2
+
+[[menu.main]]
+name = "Tags"
+url = "/tags"
+weight = 3
+
+[[menu.main]]
+name = "About"
+url = "/about"
+weight = 4
+
+
+#Home Page Settings
+
+description = "Hugo is a general-purpose website framework. Technically speaking, Hugo is a static site generator. Unlike systems that dynamically build a page with each visitor request, Hugo builds pages when you create or update your content. Since websites are viewed far more often than they are edited, Hugo is designed to provide an optimal viewing experience for your website’s end users and an ideal writing experience for website authors."
+cv_name = "sumo.pdf"
+
+mainSection = "posts"
+
+showAllPostsOnHomePage = true
+postsOnHomePage = 5
+
+tagsOverview = true
+
+showProjectsList = true
+projectsUrl = "https://github.com/Sylfrena"
+
+rss = true
+
+# the value of name should be an valid font awesome icon name (brands type)
+# https://fontawesome.com/icons?d=gallery&s=brands
+[[params.social]]
+    name = "github"
+    link = "https://github.com/Sylfrena"
+[[params.social]]
+    name = "linkedin"
+    link = "https://www.linkedin.com/company/github/"
+[[params.social]]
+    name = "twitter"
+    link = "https://www.twitter.com/SumoOfShinovar"
+[[params.social]]
+    name = "email"
+    link = "sylphrenadin@gmail.com"  # no need for "mailto:" in the head
+
+
+
+
+copyright = "Sumera" # cactus theme will use site title if copyright is not set
+
+# RSS, categories and tags disabled for an easy start
+# See configuration options for more details: 
+# https://gohugo.io/getting-started/configuration/#toml-configuration
+disableKinds = [ "taxonomy", "taxonomyTerm"]
