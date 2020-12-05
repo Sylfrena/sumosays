@@ -1,6 +1,7 @@
 ---
 title: About me
 date: 2016-08-24 17:51:42
+draft: false
 ---
 
 Hi, I am Sumera. I am a CS undergrad and a kernel engineer from IIIT-Bhubaneswar.

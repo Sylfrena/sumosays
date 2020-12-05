@@ -1,3 +1,9 @@
+---
+title: Writings
+date: 2016-08-24 17:51:42
+draft: true
+---
+
 ## **2020**
 
    2020-09-01   [Lock and Key- Part 1](../lockandkeyp1)
