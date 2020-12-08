@@ -1,10 +1,6 @@
 ---
 title: "Stimuli"
 date: 2020-12-07T20:39:22+05:30
-tags:
-    - outreachy
-keywords:
-   - outreachy
 draft: false
 ---
 
