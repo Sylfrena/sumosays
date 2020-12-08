@@ -44,7 +44,7 @@ postsOnHomePage = 5
 
 tagsOverview = true
 
-showProjectsList = true
+showProjectsList = false
 projectsUrl = "https://github.com/Sylfrena"
 
 rss = true

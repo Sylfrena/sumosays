@@ -89,7 +89,7 @@
 
   {{ $showProjectsList := false }}
   {{ if .Site.Data.projects }}
-    {{ $showProjectsList = true }}
+    {{ $showProjectsList = false }}
   {{ else if (isset .Site.Params "showProjectsList") }}
     {{ $showProjectsList = .Site.Params.ShowProjectsList }}
   {{ end }}
