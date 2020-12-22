@@ -1,6 +1,6 @@
 ---
 title: "Mire/Perspire/Despair/Inquire/Aspire"
-date: 2020-12-22T20:39:22+05:30
+date: 2020-12-21T20:39:22+05:30
 draft: false
 ---
 
