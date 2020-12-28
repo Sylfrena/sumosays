@@ -1,0 +1,319 @@
+<rss version="2.0" >
+  <channel>
+    <title>Posts on Sumera Priyadarsini</title>
+    <link>https://whimsicalspren.netlify.app/posts/</link>
+    <description>Recent content in Posts on Sumera Priyadarsini</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-uk</language>
+    <lastBuildDate>Mon, 21 Dec 2020 20:39:22 +0530</lastBuildDate><link rel="alternate" type="application/rss+xml" href="https://whimsicalspren.netlify.app/posts/index.xml" title="Sumera Priyadarsini" />
+    <item>
+      <title>Mire/Perspire/Despair/Inquire/Aspire</title>
+      <link>https://whimsicalspren.netlify.app/posts/everybodystruggles/</link>
+      <pubDate>Mon, 21 Dec 2020 20:39:22 +0530</pubDate>
+      
+      <guid>https://whimsicalspren.netlify.app/posts/everybodystruggles/</guid>
+      <description>&lt;p&gt;&lt;em&gt;&lt;strong&gt;&amp;lsquo;When jarred, unavoidably, by circumstance, revert at once to yourself, and don’t lose the rhythm more than you can help. You’ll have a better group of harmony if you keep on going back to it.&amp;rsquo; — Marcus Aurelius,&lt;/strong&gt;&lt;/em&gt;
+&amp;ndash; quoth Sumera to herself after struggling for an entire week on how to start this piece of writing, and finally beginning it with a famous quote.
+Everybody struggles (even with something like writing about struggles), and here is&lt;/p&gt;
+&lt;h3 id=&#34;lesson-1&#34;&gt;Lesson 1:&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;You don&amp;rsquo;t have to find a perfect solution by yourself everytime.  Take the next step, give yourself time and keep coming back to it, improving it as you are helped by the community and you come up with better ideas.&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;In this case, what I was really struggling with is the idea of a perfect beginning and that kept blocking me from actually writing the rest of the article:&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;What if nobody feels like reading it past the first paragraph? If the article is entirely unrelatable? Why am I struggling even when I know the rest of the community is wonderful and will not judge my writing skills?&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;In hindsight I should have asked for help from peers and tech bloggers- but it never occurred to me to ask for writing advice from all the tech communities I am part of - because I have been (quite blindly) seeing both disciplines as unrelated. Just like the time I got stuck on an Ocaml issue and realised I don&amp;rsquo;t know anyone who knows Ocaml (apart from my mentor at the time) before a friend reminded me what I do know is Reddit and could always ask there.
+This time, thankfully a dead Roman emperor turned up on Google to help, and in the subsequent process of writing, I have (just) discovered,&lt;/p&gt;
+&lt;h3 id=&#34;lesson-2-and-reminder-to-self&#34;&gt;&lt;strong&gt;Lesson 2 (and reminder to self):&lt;/strong&gt;&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;Keep a list of &lt;code&gt;where to ask&lt;/code&gt; resources handy lest you forget that you have access to brilliant communities and there are people you can always ask for help without fear of judgement&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Now, before I digress again, allow me to tell you how I struggled with the initial setup of the VKMS system. As a relatively new driver in kernel age, very little has been documented for the VKMS driver outside of the patches and blog posts by previous contributors. So, my mentor, Daniel asked to me add basic setup documentation for my first patch.  We decided to include compiling, loading and basic testing with IGT as my first patch.&lt;/p&gt;
+&lt;p&gt;I had already compiled and loaded VKMS so I only had to finish testing.  When I ran the tests though, I got an error saying VKMS is not the master device. I asked in the irc, and people pointed out that the flag I was using- &lt;code&gt;IGT_FORCE_DRIVER&lt;/code&gt;-  has been deprecated so maybe that is the reason. They suggested another variable which my other members confirmed worked so I tried that. Still, no show. That is when Melissa pointed out that I should be running the tests in text mode, with GUI disabled.  Since I was not doing that, the X server stayed as master and hence all my tests were failing.&lt;/p&gt;
+&lt;p&gt;Now I should have just asked how best to switch to text mode. However, under the naive impression that it is simple and there would be one way to do it, I used,&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sudo systemctl disable gdm
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Sure enough it worked. GUI turned off, and I time-travelled, facing a machine with only the console to interact with.
+The tests succeeded, and I kept a log. All this time, I was super excited and marvelled at how early programmers accomplished so much with computers without any help from a GUI.&lt;/p&gt;
+&lt;p&gt;Then, it was time to switch back to GUI. The source I was referring to asked to use&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sudo systemctl enable gdm
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;to do this. &lt;strong&gt;Oops&lt;/strong&gt;. Error. It won&amp;rsquo;t switch back. I restarted. I tried various tutorials. I got overwhelmed by information about systemctl and gdm and display managers. Sacrificed a meal. Burned prayers. I tried more forums and their instructions. All to no avail.&lt;/p&gt;
+&lt;p&gt;At which point I finally figured out what had happned.  &lt;code&gt;display manager&lt;/code&gt; is a symbolic link that usually points to &lt;code&gt;gdm&lt;/code&gt;(gnome display manager). The link however got destroyed when I did what I did and now when I was trying to enable it back on, &lt;code&gt;systemctl&lt;/code&gt; was unable to find the actual &lt;code&gt;gdm&lt;/code&gt; and link to it.  So all I needed to do was set the link again.  Thankfully, by this time I had already asked Melissa for help. She found a link that told me how exactly to create the symlink between display manager and gdm and  voila, I had my display back! Thereafter Melissa told me to use &lt;code&gt;systemctl isolate&lt;/code&gt; to switch to and from text mode, and to try and not touch gdm.  That has worked like a charm.  That brings me to:&lt;/p&gt;
+&lt;h3 id=&#34;lesson-3&#34;&gt;&lt;strong&gt;Lesson 3:&lt;/strong&gt;&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;It is okay to keep trying, but reach out to people as soon as possible. Help will arrive&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Speaking of struggle, I have another anecdote to share. So, during the contribution period for Outreachy, I was supposed to send a few patchsets. By then, I had been contributing for a few months already. And had prior experience sending patchsets. So I was not really worried at all - I found  some relevant issues in &lt;code&gt;staging-testing&lt;/code&gt; I could fix and sent the patchset. Oops.&lt;/p&gt;
+&lt;p&gt;I checked the mailing list to find that the patchset had gotten scatterred across different lists-  a handful of recipients not getting a cover letter and some not getting the patches. Since there were a lot of maintainers across the three patches I was making, I had tried to send each patch to only the maintainers for that individual patch and in the process had skipped adding everyone to the cover letter. No wonder. I rectified my mistake and resent the patches. Then I decided to send another patchset. Oops again. Same thing happened except no idea how I messed up this time and to this day, I still am not sure.&lt;/p&gt;
+&lt;p&gt;It wasn&amp;rsquo;t that I didn&amp;rsquo;t know how to send a patchset- it was that everytime I sent one with specifcally Outreachy in mind- I kept making one stupid mistake or the other while the other patchsets I sent before or after or around the same time went perfectly smoothly.  I felt so stupid and annoyed at myself- imagine knowing something and still failing miserably at it! So here goes,&lt;/p&gt;
+&lt;h3 id=&#34;lesson-4&#34;&gt;&lt;strong&gt;Lesson 4:&lt;/strong&gt;&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;Be compassionate towards yourself when you struggle to do well, just as you would for others who make mistakes.&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Now, well into the third week of my internship, here is what I am currently struggling with-  trying to ascertain why my mouse starts behaving as if it belonged to Windows 2000 everytime I load the VKMS driver with gui on, the behaviour exacerbated as my battery depletes. With all the cursor tests passing too! Notably, this started after I applied a year old patch and applied to the latest 3 days old dri-devel kernel but then I undid that and the error still persisted, so I am quite baffled. Thankfully, I don&amp;rsquo;t yet need to load VKMS with display on, and hopefully, I will figure it out in a few days.&lt;/p&gt;
+&lt;h3 id=&#34;lesson-5&#34;&gt;&lt;strong&gt;Lesson 5:&lt;/strong&gt;&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;Sometimes, you may never figure out the problem in limited time. Move on. No point ending up as Sisyphus.&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Obviously, as I delve deeper into the system- I will struggle a lot more. The silver lining is that all the struggling so far has taught me to reach out and stop worrying excessively, and I am glad that I have mostly overcome my fear of public forums. Looking forward to documenting my further struggles!&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>IRC</title>
+      <link>https://whimsicalspren.netlify.app/posts/irc-setup/</link>
+      <pubDate>Mon, 07 Dec 2020 20:39:22 +0530</pubDate>
+      
+      <guid>https://whimsicalspren.netlify.app/posts/irc-setup/</guid>
+      <description>&lt;p&gt;It has been a few weeks since I started using the irc. The most glaring limitation for me so far has been the lack of message archival. As someone who has the memory span of a goldfish, I need to have the old messages for reference and recollection.&lt;/p&gt;
+&lt;p&gt;Daniel said something about an IRC bouncer and I think Melissa uses one so here is documenting the steps.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Stimuli</title>
+      <link>https://whimsicalspren.netlify.app/posts/outreachy-1/</link>
+      <pubDate>Mon, 07 Dec 2020 20:39:22 +0530</pubDate>
+      
+      <guid>https://whimsicalspren.netlify.app/posts/outreachy-1/</guid>
+      <description>&lt;h2 id=&#34;on-getting-outreachy&#34;&gt;On getting Outreachy&lt;/h2&gt;
+&lt;p&gt;Hi, and thanks so much for stopping by.&lt;/p&gt;
+&lt;p&gt;I am &lt;a href=&#34;https://whimsicalspren.netlify.app/about/&#34;&gt;Sumera&lt;/a&gt;, a fresh CompSci undergraduate and generalist programmer. In the past, I have dabbled into various things which include a little backend dev and data science. I am interested in low-level systems software and programming languages. I recently started my Outreachy internship with the Linux Kernel which requires me to diligently blog at least once every fortnight.&lt;/p&gt;
+&lt;p&gt;This is a documentation of some of the &lt;em&gt;whys(motivations) and hows(values)&lt;/em&gt; of my selection for Outreachy.&lt;/p&gt;
+&lt;h2 id=&#34;learning&#34;&gt;&lt;code&gt;Learning&lt;/code&gt;&lt;/h2&gt;
+&lt;p&gt;&lt;em&gt;Curiosity killed the cat but satisfaction brought it back.&lt;/em&gt; As a kid I asked &lt;em&gt;why&lt;/em&gt; so many times that eventually my neighbours nicknamed me &lt;em&gt;kian&lt;/em&gt;(the Odia word for why). I was always curious and wanted to know everything. Learning comprises &lt;em&gt;cultivating this curiosity&lt;/em&gt;.  Learning is how we evolve.  And it is definitely not limited to just academics, professional interests or hobbies&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;. We must also learn from people values that we admire- learning nurture, compassion, mutual respect, and open-mindedness is just as important.&lt;/p&gt;
+&lt;h2 id=&#34;perseverance&#34;&gt;&lt;code&gt;Perseverance&lt;/code&gt;&lt;/h2&gt;
+&lt;p&gt;This core value is the key to the why and how I am here despite all my failures (yes, there is quite a list). If you are reading this, and are an aspiring intern, then continue working hard at the contributions and upskilling. Every contribution period- be it for Outreachy or GSoC has had a wonderful steep learning curve for me. If you are an aspiring intern who was previously not accepted and is trying again,  then give yourself a hug and thwack away &lt;em&gt;MxImposterSyndrome&lt;/em&gt; when they try to be friends. They are obstinate and might keep coming back but perseverance helps.&lt;/p&gt;
+&lt;p&gt;One thing that has helped me a lot in being persistent is a friend&amp;rsquo;s advice to start small. If you are trying to learn a new language- write a basic calculator before jumping to a red black tree. If you are too exhausted to actively write any code(but still want to study), watch a talk where somebody else is talking about code.  But take that teensy extra step consistently towards your goal- chip at it a little everyday, and soon you will have conquered the wall.&lt;/p&gt;
+&lt;p&gt;I have had a fair share of failures, rejected applications and bad experiences in software.  Each of these experiences have discouraged me till I nearly gave up at which point a book or a friend would inspire me to try just once more- and that subtle perseverance has taken me ahead far more than anything else.&lt;/p&gt;
+&lt;h2 id=&#34;compassion&#34;&gt;&lt;code&gt;Compassion&lt;/code&gt;&lt;/h2&gt;
+&lt;p&gt;Growing up,  there was something I believed in a lot- &lt;em&gt;Where there is a will, there is a way&lt;/em&gt;.  That circumstances are only excuses for a lack of determination and hard-work is something that was drilled into me from my childhood - not unlike most other kids from 90s India. It was only in late adolescence that I realised this is absolute drivel internalised and externalised by people as an excuse to look down on other people who may not be as well-placed. We have a very ableist definition of hard-work which entails that &lt;em&gt;being able to work hard is a privilege&lt;/em&gt;. Not everyone is well-equipped or has the circumstances to be able to do goal-oriented work, let alone go through the grind.  Software comes with its own set of challenges- there is only so much one can learn if they are not able to afford good internet or a decent machine. There is only so much code someone can write if they suffer from RSI or a chronic illness. There is only so much progress one can make if they are made to feel unwelcome in tech communities.  In a world where productivity is measured more in comparison to peers rather than personal growth, &lt;em&gt;compassion and kindness are essential for self-growth.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;Reportedly, &lt;a href=&#34;https://www.goodreads.com/quotes/10204722-a-student-once-asked-anthropologist-margaret-mead-what-is-the&#34;&gt;anthropologist Margaret Mead once said&lt;/a&gt; that a healed femur is what separates humanity from animals - civilisation begins and flourishes when members of a species are compassionate enough to care for a injured member with food and shelter long enough for a them to heal.  &lt;em&gt;Why should it then be so hard for us to respect a fellow human being?&lt;/em&gt; Too often we harshly judge and exclude people for not being us- and we even justify our prejudices along the way.  No two people have the same privileges, and, always, people have different journeys and destinations. We may never fully understand what another person goes through , but we definitely can learn to &lt;em&gt;empathise and support&lt;/em&gt; and make it good for everyone. Kindness and empathy is key to building wholesome and thriving communities.&lt;/p&gt;
+&lt;h3 id=&#34;motivation-for-outreachy&#34;&gt;&lt;code&gt;Motivation for Outreachy&lt;/code&gt;&lt;/h3&gt;
+&lt;p&gt;My biggest motivations for Outreachy boiled down to two major factors:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The mentorship- I realised I would need this to make more significant contributions in kernel development. Things get so much easier if you have experienced seniors nudging you on the right path.&lt;/li&gt;
+&lt;li&gt;I am a &lt;em&gt;huge&lt;/em&gt; admirer of open source culture. And Outreachy means getting paid to do open-source - best thing ever!&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;That said, there were more contributing factors, I am going to elaborate on them a bit- these are mostly negative experiences though, so you may skip the rest of this section if you wish. :)&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Disclaimer&lt;/em&gt;: I am going to talk about failures a bit here, please bear with me. Don&amp;rsquo;t get me wrong- I usually talk about more positive things- but it is crucial to put this record of failures and bad experiences out there. I know it would have helped me to read something like this a few years ago.&lt;/p&gt;
+&lt;p&gt;Before being accepted for this internship, here are a few times my application has been rejected:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Outreachy - 1&lt;/li&gt;
+&lt;li&gt;GSoC - 3&lt;/li&gt;
+&lt;li&gt;RGSoC - 2&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;And these are only the popular open-source internships around, there have been more rejections offline, and a whole lot of it in university academics.&lt;/p&gt;
+&lt;p&gt;All of the aforementioned times,  I have come very close to getting through. But then, either the project I got would not be selected, or somebody else with more experience would swoop in and finish the PR I was struggling at for a week in a day and then most of my hopes would get crushed. Imposter syndrome didn&amp;rsquo;t help my case.&lt;/p&gt;
+&lt;p&gt;I remember one of the first PRs I made as part of an Outreachy contribution period- I followed the link as pointed out in the task description, learnt basic Docker,  navigated the flabbergastingly foreign interface of GitLab(I was very new to open source and had barely begun to make sense of GitHub),  and made the PR-  only to be very rudely spoken to by the maintainer. I was a newcomer and intimidated and made to feel extremely unwelcome - I was so demotivated that I nearly gave up that time. But I had somehow also started to look at another project - and the mentor &lt;a href=&#34;https://twitter.com/zeenix?lang=en&#34;&gt;Zeeshan Ali&lt;/a&gt; was extremely helpful and welcoming- and that can be very motivating.  A few months later I decided to start contributing to the Linux Kernel- I was elated to have my initial patches accepted.&lt;/p&gt;
+&lt;p&gt;Another incident comes to my mind. I had started sending initial patches from my newly purchased laptop- it is Dell with an additional Nvidia gpu- this model was notorious for having some finicky behaviour with dual boot. A couple of my peers had a similar Dell+Nvidia combination and had deemed dual boot more risky than necessary. But I went ahead with a dual boot- I wanted to keep windows just in case for college stuff.  A couple months later when one of my classmates saw this- her first question was: &lt;em&gt;Oh wow, who did it for you?&lt;/em&gt;. Not even &lt;em&gt;who helped you&lt;/em&gt;; this person had straight-up assumed I would be too stupid or lazy to be able to even try a dual boot by myself.  I know for a fact that  that question would never have been asked of a cis-male peer(or someone who topped in academics). I was aghast and angry at such sexist and discriminatory behavior but that only made my resolve stronger. Every day, I strived to learn more.&lt;/p&gt;
+&lt;p&gt;My progress was quite slow - I was only doing trivial patches and poking around the kernel code in general. For my last semester in college, I ended up doing a data science internship and
+only then did I realise how much I missed contributing even those trivial patches. Once my internship ended- I started to send coccinelle patches and applied to Community Bridge for the project &lt;a href=&#34;https://mentorship.lfx.linuxfoundation.org/project/cdfbfdad-9bc1-4623-9624-f8b7133c9167&#34;&gt;&lt;em&gt;Refurbish Make Coccicheck&lt;/em&gt;&lt;/a&gt; with Julia Lawall as mentor. I was given a small task which I completed and was accepted! I learnt a lot about shell scripting, Semantic Patch language and had some mad fun writing Ocaml. Although I had no hopes of getting selected for Outreachy, Julia encouraged me to apply.  Moreover, she somehow managed to instill a sense of confidence in me which made a lot of difference. I did not worry about results as much this time - and instead just contributed to the 3 projects I had shortlisted. As usual, I had a lot of fun, got my first code PRs outside of the Linux Kernel merged and also learned a little bit on how to write a driver!&lt;/p&gt;
+&lt;p&gt;When I found out I actually got in, I was in proper shock for a week- even now it is a bit surreal. It is going to be one week today and I am very happy about it. I hope to write more soon.&lt;/p&gt;
+&lt;h4 id=&#34;footnotes&#34;&gt;&lt;em&gt;Footnotes&lt;/em&gt;&lt;/h4&gt;
+&lt;section class=&#34;footnotes&#34; role=&#34;doc-endnotes&#34;&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn:1&#34; role=&#34;doc-endnote&#34;&gt;
+&lt;p&gt;If you are more into learning, here are two favourite pieces of work- &lt;a href=&#34;https://superorganizers.substack.com/p/how-to-build-a-learning-machine&#34;&gt;Simon Eskildsen on Learning&lt;/a&gt; and this Coursera course on &lt;a href=&#34;https://www.coursera.org/learn/learning-how-to-learn&#34;&gt;Learning How to Learn&lt;/a&gt;. &lt;a href=&#34;#fnref:1&#34; class=&#34;footnote-backref&#34; role=&#34;doc-backlink&#34;&gt;&amp;#x21a9;&amp;#xfe0e;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/section&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Lock And Key - Part 1</title>
+      <link>https://whimsicalspren.netlify.app/posts/lockandkeyp1/</link>
+      <pubDate>Wed, 02 Dec 2020 20:39:22 +0530</pubDate>
+      
+      <guid>https://whimsicalspren.netlify.app/posts/lockandkeyp1/</guid>
+      <description>&lt;h2 id=&#34;1-a-primer-on-processes-and-locks&#34;&gt;&lt;code&gt;1. A primer on processes and locks&lt;/code&gt;&lt;/h2&gt;
+&lt;p&gt;Every application, every program that runs on a computer runs as a process. The shell you use to interact with the os, the music player on your machine, your browser- basically, every set of instructions is executed as a process. A process is an instance of sourcecode that needs to be executed. Whenever a program is to be run, the kernel allocates certain resources like memory, address space etc. Data may be accessed by more than one process at the same time. A common situation is when there are multiple instances of an application running- such as several open tabs in a browser. You can verify this using &lt;a href=&#34;&#34;&gt;htop&lt;/a&gt;. A process comprises data and memory resources that are associated with the program. When several processes try to concurrently access this common set of resources, proper synchronisation is necessary to implement efficient resource-sharing among the processes. This is where locking comes in.&lt;/p&gt;
+&lt;p&gt;Locks are implemented on shared data resources to ensure that processes are in sync when accessing common data. Only one process should have permission to modify or write to the data at a time. A second process can make changes to the same data only when the previous process is done with it. To facilitate this, processes acquire locks on the data for the duration of their execution and then release these locks from memory. It is necessary that every lock that is acquired must be released as well to prevent processes from hoarding memory and delaying other tasks.&lt;/p&gt;
+&lt;p&gt;Often, locks are acquired within a function only if certain conditions are met. However, this function can have control flow paths through the entire program. It must be ensured that all potential paths have an unlock as well. Given the huge extent of kernel code, it is easy to skip adding an unlock function to each path the funtion might take. We can leverage Coccinelle semantic patches to detect and examine such situations.&lt;/p&gt;
+&lt;h2 id=&#34;2-using-coccinelle&#34;&gt;&lt;code&gt;2. Using Coccinelle&lt;/code&gt;&lt;/h2&gt;
+&lt;p&gt;The philosophy behind Coccinelle is to frame a pattern that satisfies the usecase we have in mind. This pattern is written in form of transformation rules. We want to find a scenario where a lock may be potentially acquired and released under different conditions leading to resource hogging. Let&amp;rsquo;s start!&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;@prelocked@
+expression E;
+position p;
+@@
+mutex_lock(E@p)
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Our first rule &lt;code&gt;prelocked&lt;/code&gt; tries to check whether a lock is acquired. It keeps track of the resource on which lock is acquired using the variable &lt;code&gt;E&lt;/code&gt;. The &lt;code&gt;@p&lt;/code&gt; storesthe position of the lock declaration. This helps to identify the particular lock in case there are more than one locks. Next we define a second rule &lt;code&gt;balanced&lt;/code&gt; :&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;@balanced@
+position prelocked.p;
+position pif;
+expression e,prelocked.E;
+statement S1,S2;
+@@
+
+if (e) {
+ ... when any
+mutex_lock(E@p)
+... when != E
+    when any
+ else S1
+.. when != E
+   when any
+f@pif (e) {
+... when != E
+    when any
+mutex_unlock(E);
+... when any
+ else S2
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Usually, to find a non-ideal condition- we need to define the ideal first. Drawing on that analogy we define a rule where locking has been properly implemented- i.e. the acquired lock is released under the same conditions as well. Later, we will take this balanced rule and negate it to detect situations where locking has been irregularly implemented.&lt;/p&gt;
+&lt;p&gt;We want to check if the lock is released under the same condition as under which it was acquired. The condition here is represented by the expression variable &lt;code&gt;e&lt;/code&gt;. First, we check for the &lt;code&gt;mutex_lock&lt;/code&gt; we found in the prelocked rule. In the next if block we check for &lt;code&gt;mutex_unlock&lt;/code&gt; for the same condition &lt;code&gt;e&lt;/code&gt;. In both these cases, we make sure the resource E is not called elsewhere in these blocks, so as to avoid false positives. We mark the if block where &lt;code&gt;mutex_unlock()&lt;/code&gt; is called using the position variable &lt;code&gt;pif&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Let&amp;rsquo;s move on to the next rule where we define the pattern we want.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;@@
+expression E,x,f;
+position prelocked.p;
+position any balanced.pif;
+statement S1,S2,S3,S4;
+@@
+
+*mutex_lock(E@p);
+... when != mutex_unlock(E);
+    when != if@pif (...) S1 else S2
+    when any
+x = f(...);
+*if (&amp;lt;+...x...+&amp;gt;)
+{
+  ... when != mutex_unlock(E);
+      when != if@pif (...) S3 else S4
+* return ...;
+}
+... when any
+*mutex_unlock(E);
+... when != mutex_lock(E);
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Here we inherit the &lt;code&gt;p&lt;/code&gt; and the &lt;code&gt;pif&lt;/code&gt; position metavariables to specify the respective &lt;code&gt;mutex_lock&lt;/code&gt; and &lt;code&gt;mutex_unlock&lt;/code&gt; we marked in the &lt;code&gt;prelocked&lt;/code&gt; and &lt;code&gt;balanced&lt;/code&gt; rules respetively. In&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;*mutex_lock(E@p);
+... when != mutex_unlock(E);
+    when != if@pif (...) S1 else S2
+    when any
+
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;we first identify the mutex lock, then negate the if condition from the balanced rule, making sure &lt;code&gt;mutex_unlock&lt;/code&gt; has not been called. Then,&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;x = f(...);
+*if (&amp;lt;+...x...+&amp;gt;)
+{
+  ... when != mutex_unlock(E);
+      when != if@pif (...) S3 else S4
+* return ...;
+}
+
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;we check to ensure that the mutex_unlock() has not been called within an arbitrary function denoted by &lt;code&gt;x=f(...)&lt;/code&gt;. We also check that the balanced rule is not satisfied here.&lt;/p&gt;
+&lt;p&gt;Finally, we check if &lt;code&gt;mutex_unlock&lt;/code&gt; has been called in the program elsewhere and no other lock has been acquired:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;... when any
+*mutex_unlock(E);
+... when != mutex_lock(E);
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;In all, we try to find a pattern where:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;mutex_lock` is present but the balanced rule is not satisfied.&lt;/li&gt;
+&lt;li&gt;In the case where a function is declared within an if block, it returns without satisfying the balanced rule or calling &lt;code&gt;mutex_unlock&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;mutex_unlock&lt;/code&gt; is called outside an if block.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;We save this script in a &lt;em&gt;.cocci&lt;/em&gt; file and then run it to find code segments of interest.&lt;/p&gt;
+&lt;h2 id=&#34;3-sematic-patch-results&#34;&gt;&lt;code&gt;3. Sematic patch results&lt;/code&gt;&lt;/h2&gt;
+&lt;p&gt;On running he script, I found several matching patches that did not have matching unlocks. Next, we need to verify these results, identify common false positive scenarios, nd improve the script. Some common scenarios were:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Sometimes, the unlock was called in a different function which was often specified under an if condition.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;diff -u -p ./drivers/vfio/vfio.c /tmp/nothing/vfio/vfio.c
+    --- ./drivers/vfio/vfio.c
+    +++ /tmp/nothing/vfio/vfio.c
+    @@ -360,7 +360,6 @@ static struct vfio_group *vfio_create_gr
+        return ERR_PTR(ret);
+      }
+   
+    -mutex_lock(&amp;amp;vfio.group_lock);
+      / Did we race creating this group? */
+      lst_for_each_entry(tmp, &amp;amp;vfio.group_list, vfio_next) {
+    @@ 372,19 +371,15 @@ static struct vfio_group *vfio_create_gr
+         
+      mnor = vfio_alloc_group_minor(group);
+    -if (minor &amp;lt; 0) {
+    vfio_group_unlock_and_free(group);
+    -	return ERR_PTR(minor);
+         
+      dv = device_create(vfio.class, NULL,
+          MKDEV(MAJOR(vfio.group_devt), minor),
+              group, &amp;quot;%s%d&amp;quot;, group-&amp;gt;noiommu ? &amp;quot;noiommu-&amp;quot; : &amp;quot;&amp;quot;,
+              iommu_group_id(iommu_group));
+    -	if (IS_ERR(dev)) {
+        vfio_free_group_minor(minor);
+        vfio_group_unlock_and_free(group);
+    -		return ERR_CAST(dev);
+      }
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;In the &lt;code&gt;if&lt;/code&gt; cases, there is no &lt;code&gt;mutex_unlock()&lt;/code&gt; present. However, the &lt;code&gt;vfio_group_unlock_and_free()&lt;/code&gt; function called in these &lt;code&gt;if&lt;/code&gt; blocks calls the &lt;code&gt;mutex_unlock()&lt;/code&gt; function.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;In another case, the conditional statements were directed towards a &lt;code&gt;goto&lt;/code&gt; statement which called &lt;code&gt;mutex_unlock().&lt;/code&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;/* Check if bank switch was successful */
+   dret = sdw_ml_sync_bank_switch(bus);
+   - if (ret &amp;lt; 0) {
+       dev_err(bus-&amp;gt;dev,
+       &amp;quot;multi link bank switch failed: %d\n&amp;quot;, ret);
+       goto error;
+     }
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Here, the &lt;code&gt;error&lt;/code&gt; block contained a &lt;code&gt;mutex_unlock()&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;In yet other cases, certain conditions only returned an error and exited/ended. It was difficult to ascertain whether the intended behaviour was to exit the function with the lock still held.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;mutex_lock(&amp;amp;blka-&amp;gt;mutex);
+    locked = true;
+    for (i = 0; i &amp;lt; rhte_src-&amp;gt;lxt_cnt; i++) {
+        aun = (lxt[i].rlba_base &amp;gt;&amp;gt; MC_CHUNK_SHIFT);
+        if (ba_clone(&amp;amp;blka-&amp;gt;ba_lun, aun) == -1ULL) {
+            rc = -EIO;
+            goto err;
+        }
+    }
+}
+   
+rc = cxlflash_afu_sync(afu, ctxid, rhndl, AFU_LW_SYNC);
+if (unlikely(rc)) {
+    rc = -EAGAIN;
+    goto err2;
+}
+   
+out:
+    if (locked)
+        mutex_unlock(&amp;amp;blka-&amp;gt;mutex);
+    dev_dbg(dev, &amp;quot;%s: returning rc=%d\n&amp;quot;, __func__, rc);
+    return rc;
+err2:
+    /* Reset the RHTE */
+    rhte-&amp;gt;lxt_cnt = 0;
+    dma_wmb();
+    rhte-&amp;gt;lxt_start = NULL;
+    dma_wmb();
+err:
+    /* free the clones already made */
+    for (j = 0; j &amp;lt; i; j++) {
+        aun = (lxt[j].rlba_base &amp;gt;&amp;gt; MC_CHUNK_SHIFT);
+        ba_free(&amp;amp;blka-&amp;gt;ba_lun, aun);
+    }
+    kfree(lxt);
+    goto out;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;If control ends up in &lt;code&gt;err2&lt;/code&gt;, then the fate of the lock becomes unclear. &lt;code&gt;dma_wmb&lt;/code&gt; has not been defined in &lt;code&gt;vlun.c&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;In a specific case, sometimes the code checked whether the lock was held or not using a function such as &lt;code&gt;mutex_is_locked()&lt;/code&gt; which returns a boolean.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt; --- ./drivers/soundwire/stream.c       
+ @@ -851,11 +845,9 @@ msg_unlock:
+ list_for_each_entry(m_rt, &amp;amp;stream-&amp;gt;master_list, stream_node) {
+    bus = m_rt-&amp;gt;bus;
+    if (mutex_is_locked(&amp;amp;bus-&amp;gt;msg_lock))
+        mutex_unlock(&amp;amp;bus-&amp;gt;msg_lock);
+ }
+    
+    
+return ret;
+    
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Cases 2 and 4 have reliable patterns that can be matched by checking for &lt;code&gt;mutex_unlock()&lt;/code&gt; within &lt;code&gt;goto&lt;/code&gt; and &lt;code&gt;mutex_is_locked()&lt;/code&gt;.
+In the next post, we will modify this script to eliminate these false positives.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
